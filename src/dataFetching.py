@@ -28,6 +28,11 @@ def get_data(offset=0):
         print("50001 - Check your CHANNEL/AUTHOR ID")
         r.close()
         exit(1)
+    elif r.status_code == 50035:
+        data = r.json()
+        print(data['errors'])
+        r.close()
+        exit(1)
     elif r.status_code == 401:
         print("401 : Unauthorized Access - Check your TOKEN")
         r.close()

@@ -33,17 +33,13 @@ for line in lines:
 params = []
 
 for i in filters:
-    if not i.count('HAS') or filters[i].isdigit():
+    if not i.count('HAS') and filters[i].isdigit():
         params.append(str(i) + '=' + str(filters[i]))
     elif filters[i] == 'YES':
         params.append("has="+str(i.split('_')[1]))
+    elif i.count('INCLUDE_NSFW'):
+        params.append(str(i) + '=' + str(filters[i]))
 
 
 BASE_URL = f"https://discord.com/api/v9/guilds/{GUILD_ID}/messages/search?"
 FINAL_URL = BASE_URL + "&".join(params).strip().lower()
-
-# https://discord.com/api/v9/guilds/1010980909568245801/messages/search?author_id=217907781456363521&has=image&include_nsfw=true&offset=150
-
-
-
-
