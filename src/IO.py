@@ -18,6 +18,11 @@ def write_pickle(pickle_file, data):
     with open(pickle_file, 'wb') as f:
         pickle.dump(data, f)
 
+def save_history():
+    write_pickle(download_history_id, download_history_id_set)
+    write_pickle(download_history_url, download_history_url_set)
+
+
 if not os.path.exists(download_history_url):
     download_history_url_set = write_pickle(download_history_url, download_history_url_set)
 else:
@@ -38,7 +43,7 @@ def check_file_exists():
         
     if not os.path.exists(download_list):
         with open(download_list, 'w', encoding='utf8') as f:
-            f.write('hash_id,attachment_url,attachment_filename\n')
+            f.write('hash_id,attachment_url,attachment_filename,author_global_name\n')
 
 
 def append_to_csv(rows=[], main_data_file=main_data_file):
@@ -49,6 +54,7 @@ def append_to_csv(rows=[], main_data_file=main_data_file):
             f.write(line)
 
 def clean_data(return_data=False):
+    check_file_exists()
     data = pd.read_csv(main_data_file)
     data = data.drop_duplicates(subset=['hash_id'])
     data = data.dropna(subset=['attachment_url'])
@@ -65,11 +71,16 @@ def update_download_list():
         archivedDatabase_data.to_csv(archivedDatabase, index=False)
     else:
         os.rename(main_data_file, archivedDatabase)
-    data = data[['hash_id', 'attachment_url', 'attachment_filename']]
+    data = data[['hash_id', 'attachment_url', 'attachment_filename', 'author_global_name']]
     download_list_data = pd.read_csv(download_list)
     download_list_data = pd.concat([download_list_data, data])
     download_list_data = download_list_data.drop_duplicates(subset=['hash_id'])
     download_list_data.to_csv(download_list, index=False)
     os.remove(main_data_file)
+    return download_list_data
+
+
+
+
 
 

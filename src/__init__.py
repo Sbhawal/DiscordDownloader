@@ -15,11 +15,17 @@ HAS_LINK = NO
 HAS_FILE = NO
 HAS_EMBED = NO
 HAS_VIDEO = NO
-HAS_IMAGE = YES 
+HAS_IMAGE = YES
 HAS_STICKER = NO 
 HAS_SOUND = NO
 
-include_nsfw = TRUE"""
+include_nsfw = TRUE
+
+# Keeping TRUE will create different download folders for different user
+filterByAuthor = TRUE
+
+# Keeping TRUE will download files in chunks, helpful for larger file sizes.
+STREAM = FALSE"""
 
 if __name__ != "__main__":
     folders = ['downloads', 'logs', 'history', 'data']
