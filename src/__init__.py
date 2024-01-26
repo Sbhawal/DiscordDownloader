@@ -19,7 +19,7 @@ HAS_IMAGE = YES
 HAS_STICKER = NO 
 HAS_SOUND = NO
 
-include_nsfw = TRUE
+INCLUDE_NSFW = TRUE
 
 # Keeping TRUE will create different download folders for different user
 filterByAuthor = TRUE
