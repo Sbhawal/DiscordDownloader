@@ -1,6 +1,5 @@
 import os
 
-
 filterByAuthor = False
 
 # Reading config file
@@ -22,11 +21,11 @@ for line in lines:
     if line.count('TOKEN'):
         TOKEN = line.split('=')[1].strip()
     elif line.count('GUILD_ID'):
-        GUILD_ID = line.split('=')[1].strip()
+        GUILD_ID = line.split('=')[1].replace(" ","")
     elif line.count('filterByAuthor'):
-        filterByAuthor = line.split('=')[1].strip()
+        filterByAuthor = line.split('=')[1].replace(" ","")
     elif line.count('STREAM'):
-        STREAM = line.split('=')[1].strip()
+        STREAM = line.split('=')[1].replace(" ","")
     else:
         line = line.split('=')
         filters[line[0].strip()] = line[1].strip()

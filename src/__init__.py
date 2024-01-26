@@ -2,13 +2,13 @@ import os
 
 configFileContents = """
 # Paste your TOKEN here
-TOKEN = MzcyNjE0NDI3MzczMjA3NTUy.GeTOp1.4va-Y0biRpYn9OkATjApydxFvHaTmtNDDuX2XE
+TOKEN = RandomStingOfCharactersWhichIsYourTokenCopyHere  https://www.youtube.com/watch?v=YEgFvgg7ZPI
 
 # Copy and Paste the required ID from DISCORD
 # Filter by ID
-AUTHOR_ID = 217907781456363521
-CHANNEL_ID = 1012494851188731985
-GUILD_ID = 1010980909568245801
+AUTHOR_ID = XXXXXXXXXXXXXXXXXXX
+CHANNEL_ID = XXXXXXXXXXXXXXXXXXX
+GUILD_ID = XXXXXXXXXXXXXXXXXXX
 
 # Filter by attachments, YES/NO
 HAS_LINK = NO

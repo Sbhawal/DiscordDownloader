@@ -1,8 +1,8 @@
 import requests, time
 from tqdm import tqdm
 import hashlib
-from config import TOKEN, FINAL_URL
-from IO import append_to_csv, update_download_list
+from src.config import TOKEN, FINAL_URL
+from src.IO import append_to_csv, update_download_list
 
 
 HEADERS = {
@@ -23,15 +23,15 @@ def get_data(offset=0):
     elif r.status_code == 10004:
         print("10004 - Check your GUILD_ID")
         r.close()
-        return None
+        exit(1)
     elif r.status_code == 50001:
         print("50001 - Check your CHANNEL/AUTHOR ID")
         r.close()
-        return None
+        exit(1)
     elif r.status_code == 401:
         print("401 : Unauthorized Access - Check your TOKEN")
         r.close()
-        return None
+        exit(1)
     else:
         data = r.json()
         # print("Data fetched")
@@ -77,12 +77,13 @@ def parse_data(data):
 def get_num_messages():
     data = get_data()
     return data['total_results']
-    
-num_messages = get_num_messages()
-print("Total messages with the filters :", num_messages)
-print("Fetching messages...")
 
-for i in tqdm(range(int(num_messages/25)+1)):
-    data = get_data(offset=i*25)
-    rows = parse_data(data)
-    append_to_csv(rows)
+def scrape():    
+    num_messages = get_num_messages()
+    print("Total messages with the filters :", num_messages)
+    print("Fetching messages...")
+
+    for i in tqdm(range(int(num_messages/25)+1)):
+        data = get_data(offset=i*25)
+        rows = parse_data(data)
+        append_to_csv(rows)

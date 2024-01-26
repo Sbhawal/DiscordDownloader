@@ -62,7 +62,7 @@ def clean_data(return_data=False):
         return data
     data.to_csv(main_data_file, index=False)
 
-def update_download_list():
+def update_download_list(return_data=True):
     data = clean_data(return_data=True)
     if os.path.exists(archivedDatabase):
         archivedDatabase_data = pd.read_csv(archivedDatabase)
@@ -71,16 +71,22 @@ def update_download_list():
         archivedDatabase_data.to_csv(archivedDatabase, index=False)
     else:
         os.rename(main_data_file, archivedDatabase)
+        # pass
     data = data[['hash_id', 'attachment_url', 'attachment_filename', 'author_global_name']]
     download_list_data = pd.read_csv(download_list)
     download_list_data = pd.concat([download_list_data, data])
     download_list_data = download_list_data.drop_duplicates(subset=['hash_id'])
+    download_list_data.set_index('attachment_url', inplace=True)
+    alreadyDownloaded = download_list_data.loc[download_list_data.index.isin(download_history_url_set)]
+    download_list_data.reset_index(inplace=True)
+    download_history_id_set.update(alreadyDownloaded['hash_id'])
+    download_list_data = download_list_data[~download_list_data['attachment_url'].isin(download_history_url_set)]
     download_list_data.to_csv(download_list, index=False)
     os.remove(main_data_file)
-    return download_list_data
+    if return_data:
+        return download_list_data
 
+def update_history(return_data=True):
+    print("To be Implemented")
 
-
-
-
-
+# update_download_list()

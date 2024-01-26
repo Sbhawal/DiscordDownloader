@@ -2,17 +2,18 @@ import os, threading
 import requests
 from tqdm import tqdm
 import time
-from IO import *
-from config import filterByAuthor, STREAM
+from src.IO import download_history_id_set, download_history_url_set, save_history, update_download_list
+from src.config import filterByAuthor, STREAM
 
 download_folder = r'.\downloads'
+
 
 def download_file(url, filename, author):
     try:
         if url in download_history_url_set:
             return
         response = requests.get(url, stream=STREAM)
-        if filterByAuthor:
+        if filterByAuthor == "TRUE":
             if os.path.exists(os.path.join(download_folder, author)):
                 pass
             else:
@@ -25,13 +26,15 @@ def download_file(url, filename, author):
                 os.remove(filename)
             except:
                 pass
-        with open(filename, 'wb') as file:
-            if STREAM:
+        if STREAM == "TRUE":
+            with open(filename, 'wb') as f:
                 for chunk in response.iter_content(chunk_size=1024):
                     if chunk:
-                        file.write(chunk)
-            else:
-                file.write(response.content)
+                        f.write(chunk)
+        else:
+            with open(filename, 'wb') as f:
+                f.write(response.content)
+        
         download_history_url_set.add(url)
     except Exception as e:
         pass
@@ -68,10 +71,8 @@ def multi_download(download_list):
 
 
 
-
-
-download_list = update_download_list()
-download_list = download_list.set_index('hash_id')[['attachment_url', 'attachment_filename', 'author_global_name']].to_dict(orient='index')
-
-
-multi_download(download_list)
+def download():
+    download_list = update_download_list()
+    download_list = download_list.set_index('hash_id')[['attachment_url', 'attachment_filename', 'author_global_name']].to_dict(orient='index')
+    multi_download(download_list)
+    save_history()
