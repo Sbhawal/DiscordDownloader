@@ -52,7 +52,10 @@ def parse_data(data):
         message_id = i[0]['id']
         author_id = i[0]['author']['id']
         author_username = i[0]['author']['username'].replace(',', '')
-        author_global_name = i[0]['author']['global_name'].replace(',', '')
+        try:
+            author_global_name = i[0]['author']['global_name'].replace(',', '')
+        except:
+            author_global_name = "Unknown"
 
         if len(i[0]['attachments']) > 0:
             for attachment in i[0]['attachments']:
